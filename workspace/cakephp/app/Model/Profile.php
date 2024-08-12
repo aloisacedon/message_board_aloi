@@ -58,9 +58,9 @@ class Profile extends AppModel {
                 'message' => 'Please enter a valid email address'
             ),
             'unique' => array(
-                'rule' => 'isUnique',
+                'rule' => 'validateEmailFromUsers',
                 'message' => 'This email is already registered'
-            )
+			),
 			),
 		'image' => array(
             'uploadError' => array(
@@ -95,4 +95,24 @@ class Profile extends AppModel {
 
         return true;
     }
+
+	public function validateEmailFromUsers($check){
+		$email = array_values($check)[0];
+		  // Load the Profile model
+		  $Users = ClassRegistry::init('User');
+
+		  // Find the profile based on some condition, e.g., user_id
+		  $user = $Users->find('first', [
+			  'conditions' => ['User.id' => $this->data['Profile']['id']],
+			  'fields' => ['User.email']
+		  ]);
+
+		  if ($user && $email === $user['User']['email']) {
+			  // If the email matches the profile's some_field, return true
+			  return true;
+		  }
+
+		  // If validation fails, return false
+		  return false;
+	}
 }

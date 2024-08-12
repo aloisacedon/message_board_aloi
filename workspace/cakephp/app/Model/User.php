@@ -65,7 +65,7 @@ class User extends AppModel {
                 'message' => 'Please enter a valid email address'
             ),
             'unique' => array(
-                'rule' => 'isUnique',
+                'rule' => 'uniqueEmail',
                 'message' => 'This email is already registered'
             )
         ),
@@ -111,4 +111,18 @@ class User extends AppModel {
         }
         return true;
     }
+
+
+	public function uniqueEmail($check){
+		$email = array_values($check)[0];
+		$emailExists = $this->find('first',array(
+			'conditions' => array('User.email' => $email, 'User.id !=' => $this->data['User']['id'])
+		));
+
+		if($emailExists) return false;
+		return true;
+	}
+
+
+
 }

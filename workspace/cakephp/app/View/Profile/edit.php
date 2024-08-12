@@ -16,6 +16,11 @@
 					</div>
 				</div>
 			</div>
+			<?php if($this->Session->read('Message.flash')){
+				echo '<div class="alert alert-danger my-2" role="alert">
+						'.$this->Flash->render().'
+					</div>';
+			 } ?>
 		</div>
 	</div>
 	<div class="row mt-3">

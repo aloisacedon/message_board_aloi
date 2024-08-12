@@ -1,4 +1,7 @@
 <?php
+
+use Safe\Exceptions\ExecException;
+
 class ProfileController extends AppController {
     public $uses = ['User','Profile'];
 
@@ -17,23 +20,37 @@ class ProfileController extends AppController {
 		$userId = $this->Auth->user('id');
 		$this->set_profile_info();
 		if ($this->request->is('post')) {
-            $this->Profile->create();
+			$this->Profile->create();
 			$this->Profile->id = $userId;
-            //Validate and save the image
+
+
 			$this->User->id = $userId;
-			$this->User->saveField('email', $this->request->data['Profile']['email']);
-            if ($this->Profile->save($this->request->data,['fieldList' => ['name','birthdate','gender','hubby']])) {
+			$this->User->set([
+				'id' => $userId,
+				'email' => $this->request->data['Profile']['email']
+			]);
+
+			if($this->User->validates()){
+				$this->User->saveField('email', $this->request->data['Profile']['email']);
+			}else{
+				$errors = $this->User->validationErrors;
+				$this->Flash->error(__($errors['email'][0]));
+				return $this->redirect(array('controller' => 'Profile','action' => 'edit'));
+			}
+			// exit(var_dump($this->User->validates()));
+			if ($this->Profile->save($this->request->data,['fieldList' => ['name','birthdate','gender','hubby']])) {
+
 				$file = $this->request->data['Profile']['image'];
-                $destination = WWW_ROOT . 'img/uploads/' . $file['name'];
+				$destination = WWW_ROOT . 'img/uploads/' . $file['name'];
 				// exit(var_dump($file));
 				if($file['name'] !== ''){
 					$this->Profile->saveField('image_path','img/uploads/' . $file['name']);
 					move_uploaded_file($file['tmp_name'], $destination);
 				}
 
-                return $this->redirect(array('action' => 'index'));
-            } else {
-            }
+				return $this->redirect(array('action' => 'index'));
+			}
+
         }
 	}
 
