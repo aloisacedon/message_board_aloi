@@ -26,7 +26,7 @@
 	<div class="row mt-3">
 		<div class="col-md-12">
 			<?php echo $this->Form->file('image');?>
-			<?php echo $this->Form->input('email',['label' => 'Email Address','div' => 'form-group','class'=> 'form-control', 'value'=> $profile['email']]);?>
+			<?php echo $this->Form->input('email',['label' => 'Email Address','div' => 'form-group mt-2','class'=> 'form-control', 'value'=> $profile['email']]);?>
 			<?php echo $this->Form->input('name',['label' => 'Name','div' => 'form-group','class'=> 'form-control', 'value'=> $profile['info']['name']]);?>
 			<!-- <?php echo $this->Form->input('birthdate',['label' => 'Birth Date','div' => 'form-group','class'=> 'form-control']);?> -->
 			<div class="form-group required">
