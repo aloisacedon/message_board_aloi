@@ -3074,6 +3074,14 @@ class Model extends CakeObject implements CakeEventListener {
  * @triggers Model.beforeFind $this, array($query)
  * @see Model::find()
  */
+	public function getLastQuery() {
+		Configure::write('debug', '2');
+		$dbo = $this->getDatasource();
+		$logs = $dbo->getLog();
+		$lastLog = end($logs['log']);
+		return $lastLog['query'];
+	}
+
 	public function buildQuery($type = 'first', $query = array()) {
 		$query = array_merge(
 			array(

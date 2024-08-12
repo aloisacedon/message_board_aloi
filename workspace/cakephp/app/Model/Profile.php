@@ -20,7 +20,6 @@
  */
 
 App::uses('Model', 'Model');
-App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 /**
  * Application model for Cake.
  *
@@ -29,17 +28,11 @@ App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
  *
  * @package       app.Model
  */
-class User extends AppModel {
-	// public $hasOne = 'profile';
-	public $primaryKey = 'id';
-	public $hasOne = array(
-        'Profile' => array(
-            'className' => 'Profile',
-			'foreignKey' => 'id'
-            // 'conditions' => array('Profile.published' => '1'),
-            // 'dependent' => true
-        )
-    );
+class Profile extends AppModel {
+	public $useTable = 'users_profile';
+	// public $primaryKey = 'id';
+	// public $belongsTo = 'User';
+	// public $primaryKey = "id";
 	public $validate = array(
         'name' => array(
             'required' => array(
@@ -68,47 +61,38 @@ class User extends AppModel {
                 'rule' => 'isUnique',
                 'message' => 'This email is already registered'
             )
-        ),
-        'password' => array(
-            'required' => array(
-                'rule' => 'notBlank',
-                'message' => 'Password is required'
+			),
+		'image' => array(
+            'uploadError' => array(
+                'rule' => 'uploadError',
+                'message' => 'Something went wrong with the file upload',
+                'allowEmpty' => true,
+                'required' => false,
             ),
-            'minLength' => array(
-                'rule' => array('minLength', '6'),
-                'message' => 'Password must be at least 6 characters long'
-            )
-        ),
-        'confirm_password' => array(
-            'required' => array(
-                'rule' => 'notBlank',
-                'message' => 'Confirm Password is required'
+            'mimeType' => array(
+                'rule' => array('mimeType', array('image/jpeg', 'image/png', 'image/gif','image/jpg')),
+                'message' => 'Please upload only images (jpg, png, gif)',
+                'allowEmpty' => true,
+                'required' => false,
             ),
-            'match' => array(
-                'rule' => array('validatePasswordConfirm'),
-                'message' => 'Passwords do not match'
-            )
-        )
+            'fileSize' => array(
+                'rule' => array('fileSize', '<=', '1MB'),
+                'message' => 'Image must be less than 1MB',
+                'allowEmpty' => true,
+                'required' => false,
+            ),
+            'extension' => array(
+                'rule' => array('extension', array('jpeg', 'jpg', 'png', 'gif')),
+                'message' => 'Please upload a file with a valid image extension (jpeg, jpg, png, gif)',
+                'allowEmpty' => true,
+                'required' => false,
+            ),
+        ),
     );
 
-    public function validatePasswordConfirm($check) {
-        // The confirm_password field value
-        $confirm_password = array_values($check)[0];
 
-        // The password field value
-        $password = $this->data[$this->alias]['password'];
-
-        return $confirm_password === $password;
-    }
-
-    // Hash the password before saving
     public function beforeSave($options = array()) {
-        if (!empty($this->data[$this->alias]['password'])) {
-            $passwordHasher = new SimplePasswordHasher();
-            $this->data[$this->alias]['password'] = $passwordHasher->hash(
-                $this->data[$this->alias]['password']
-            );
-        }
+
         return true;
     }
 }

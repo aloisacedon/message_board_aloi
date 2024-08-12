@@ -35,9 +35,9 @@ class AppController extends Controller {
     public $ext = '.php';
 
     // include the Post Model
-    public $uses = array(
-        'Post'
-    );
+    // public $uses = array(
+    //     'Post'
+    // );
 
     // - include components
     public $components = array(
@@ -45,29 +45,32 @@ class AppController extends Controller {
         'Auth' => array(
             // if the user is logged in
             'loginRedirect' => array(
-                'controller' => 'users',
+                'controller' => 'messages',
                 'action' => 'index'
             ),
 
             // if teh user is not logged in AND accesses a forbidden action,
             'logoutRedirect' => array(
-                'controller' => 'pages',
-                'action' => 'display',
-                'home'
+                'controller' => 'users',
+                'action' => 'login'
             ),
             'authenticate' => array(
                 'Form' => array(
-                    // 'passwordHasher' => 'Blowfish',
+                    'passwordHasher' => 'Blowfish',
                     // if you want to customize the fields for logging in
                     // 'fields'=>array('username'=>'email','password'=>'password')
                 )
             )
         )
     );
-    
+
+	public function isAuthorizes($user) {
+		return true;
+	}
+
     public function beforeFilter(){
         parent::beforeFilter();
-        
+
         // global restriction
         // $this->Auth->allow('index', 'view', 'add');
         $this->set('currentUser', $this->Auth->user());
