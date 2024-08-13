@@ -204,7 +204,7 @@
 							</div>
 						</div>`;
 					});
-
+					messages += '<div class="row"><a class="btn btn-link" onclick="window.location.reload()">Back to messages</a></div>';
 					$("#messages").html(messages);
 				}else{
 					window.location.reload();

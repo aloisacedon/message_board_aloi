@@ -26,7 +26,7 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('controller' => 'Users', 'action' => 'login'));
-	Router::connect('/messages?:page', array('controller' => 'Messages', 'action' => 'index'),array('pass'=>'page'));
+	// Router::connect('/messages?:page', array('controller' => 'Messages', 'action' => 'index'),array('pass'=>'page'));
 	// Router::connect('/tab_page/*', array('controller' => 'Home', 'action' => 'tab'));
 	// Router::connect('/work-experience', array('controller' => 'WorkExperience', 'action' => 'index'));
 	// Router::connect('/about-me', array('controller' => 'AboutMe', 'action' => 'index'));

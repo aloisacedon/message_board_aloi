@@ -25,7 +25,8 @@
 				<ul class="navbar-nav ml-auto">
 					<?php if($currentUser){?>
 					<li class="nav-item active" >
-						<a class="nav-link" href="#">Messages</a>
+						<!-- <a class="nav-link" href="#">Messages</a> -->
+						<a class="nav-link" href="<?php echo $this->Html->url(['controller' => 'messages','action' => 'index']); ?>">Messages</a>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">

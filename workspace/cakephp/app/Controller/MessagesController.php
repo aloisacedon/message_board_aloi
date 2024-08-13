@@ -88,6 +88,7 @@ class MessagesController extends AppController {
 		$total = $this->Messages->query(
 			$this->paginateMessagesDetails("COUNT(*) as count",$token)
 		);
+		// exit($this->Messages->getLastQuery());
 		$total = $total[0][0]['count'];
 
 		$this->Paginator->settings = array(

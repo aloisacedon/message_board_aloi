@@ -27,8 +27,9 @@
 			<?php
 				if(isset($results)){
 					foreach($results as $key=>$val){
+					// echo var_dump($val);
 					$img = $val['users_profile']['image_path'] ?:  './img/avatar.png';
-
+					$del_btn = ($logged_user['id'] == $val['m1']['sender_id']) ? '<a href="#" data-id="'.$val['m1']['token'].'"  class="delete-conversation text-danger"><small><i class="fa fa-trash" aria-hidden="true"></i> delete conversation</small></a>' : '';
 					echo '
 					<div class="message-card mb-2 '.($logged_user['id'] == $val['m1']['sender_id'] ? 'flex-row-reverse' : '').'" data-token="'.$val['m1']['token'].'">
 						<img src="'.$img.'" alt="">
@@ -36,13 +37,14 @@
 							<small class="text-muted">'.$val['users_profile']['name'].'</small>
 							<div class="content">'.$val['m1']['content'].'</div>
 							<div class="d-flex justify-content-between '.($logged_user['id'] == $val['m1']['sender_id'] ? 'flex-row-reverse' : '').'">
-								<a href="#" data-token="'.$val['m1']['token'].'"  class="delete-conversation text-danger"><small><i class="fa fa-trash" aria-hidden="true"></i> delete conversation</small></a>
+								'.$del_btn.'	
 								<div class="date-time text-muted font-weight-lighter text-right" style="font-size: 14px;">'.date("F d, Y ga",strtotime($val['m1']['timestamp'])).'</div>
-							</div>
-						</div>
-					</div>';
+								</div>
+								</div>
+								</div>';
+					}
+								// <a href="#" data-token="'.$val['m1']['token'].'"  class="delete-conversation text-danger"><small><i class="fa fa-trash" aria-hidden="true"></i> delete conversation</small></a>
 				}
-			}
 
 			echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled d-none'));
 			// echo $this->Paginator->numbers();
